@@ -18,8 +18,22 @@ class Book extends Model
         'stock',
         'category_id',
         'cover_image',
-        'description'
+        'description',
+        'genre',
+        'synopsis'
     ];
+
+    public function getCoverImageUrlAttribute()
+    {
+        if ($this->cover_image) {
+            return str_starts_with($this->cover_image, 'http') 
+                ? $this->cover_image 
+                : asset('storage/' . $this->cover_image);
+        }
+
+        // Return a professional placeholder based on the title
+        return "https://ui-avatars.com/api/?name=" . urlencode($this->title) . "&size=512&background=f1f5f9&color=64748b&bold=true&format=svg";
+    }
 
     public function category()
     {

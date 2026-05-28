@@ -45,10 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/books/search-api', [App\Http\Controllers\BookController::class, 'searchApi'])->name('books.search_api');
-}); // <-- Removed duplicate definition below
 
     // Data Master
-    // Route::get('/books/search-api', [App\Http\Controllers\BookController::class, 'searchApi'])->name('books.search_api'); // Removed
     Route::post('/books/store-from-api', [App\Http\Controllers\BookController::class, 'storeFromApi'])->name('books.store_from_api');
     Route::resource('books', App\Http\Controllers\BookController::class);
     Route::get('books/{book}/check-availability', [App\Http\Controllers\BookController::class, 'checkAvailability'])->name('books.check_availability');
@@ -77,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/print', [App\Http\Controllers\ReportController::class, 'print'])->name('reports.print');
     Route::get('/admin/logs', [App\Http\Controllers\LogController::class, 'index'])->name('admin.logs');
     Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+});
 
 
 require __DIR__.'/auth.php';

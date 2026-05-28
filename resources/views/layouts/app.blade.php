@@ -123,9 +123,9 @@
                     <div x-data="{ open: false }" class="relative">
                         <div @click="open = !open" class="flex items-center gap-4 bg-white p-1.5 pr-5 rounded-2xl border border-slate-100 cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
                             <div class="h-10 w-10 rounded-xl overflow-hidden shadow-inner bg-slate-100">
-                                @if (Auth::user()->profile_photo_path)
+                                @if (Auth::user()?->profile_photo_path)
                                     <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" class="w-full h-full object-cover">
-                                @else
+                                @elseif(Auth::user())
                                     <div class="w-full h-full flex items-center justify-center text-slate-900 font-bold text-xs">
                                         {{ substr(Auth::user()->name, 0, 1) }}
                                     </div>
@@ -133,7 +133,7 @@
                             </div>
                             <div class="hidden sm:block">
                                 <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Authenticated</p>
-                                <p class="text-xs font-black text-slate-900 uppercase tracking-tight">{{ Auth::user()->name }}</p>
+                                <p class="text-xs font-black text-slate-900 uppercase tracking-tight">{{ Auth::user()?->name ?? 'Guest' }}</p>
                             </div>
                         </div>
 

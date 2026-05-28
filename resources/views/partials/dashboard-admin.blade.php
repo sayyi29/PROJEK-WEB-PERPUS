@@ -74,13 +74,7 @@
             @foreach($books->take(5) as $book)
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-2 border border-slate-50">
-                        @if($book->cover_image)
-                            <img src="{{ Str::startsWith($book->cover_image, 'http') ? $book->cover_image : asset('storage/' . $book->cover_image) }}" class="w-full h-full object-cover">
-                        @else
-                            <div class="w-full h-full bg-slate-100 flex items-center justify-center text-slate-300">
-                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18 18.247 18.477 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-                            </div>
-                        @endif
+                        <img src="{{ $book->cover_image_url }}" class="w-full h-full object-cover">
                     </div>
                     <div class="mt-4">
                         <h4 class="font-black text-[#062C2C] truncate text-[10px] uppercase tracking-tight">{{ $book->title }}</h4>

@@ -28,13 +28,7 @@
                 <div class="relative grid grid-cols-1 md:grid-cols-3 gap-16">
                     <!-- Book Cover -->
                     <div class="md:col-span-1 flex justify-center items-center">
-                        @if($book->cover_image)
-                            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-auto max-h-96 object-contain rounded-3xl shadow-xl border border-slate-50">
-                        @else
-                            <div class="w-full h-96 flex items-center justify-center bg-slate-50 rounded-3xl border border-slate-100 shadow-xl text-slate-300">
-                                Tidak Ada Gambar
-                            </div>
-                        @endif
+                        <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="w-full h-auto max-h-96 object-contain rounded-3xl shadow-xl border border-slate-50">
                     </div>
 
                     <!-- Book Details -->

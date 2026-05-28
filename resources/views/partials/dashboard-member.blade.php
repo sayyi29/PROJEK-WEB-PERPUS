@@ -46,9 +46,7 @@
                     @foreach($reservations as $res)
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-14 bg-white/10 rounded-lg overflow-hidden flex-shrink-0">
-                                @if($res->book->cover_image)
-                                    <img src="{{ Str::startsWith($res->book->cover_image, 'http') ? $res->book->cover_image : asset('storage/' . $res->book->cover_image) }}" class="w-full h-full object-cover">
-                                @endif
+                                <img src="{{ $res->book->cover_image_url }}" class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <p class="text-[10px] font-black uppercase truncate w-32">{{ $res->book->title }}</p>
@@ -77,9 +75,7 @@
             @foreach($forYou as $book)
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-3">
-                        @if($book->cover_image)
-                            <img src="{{ Str::startsWith($book->cover_image, 'http') ? $book->cover_image : asset('storage/' . $book->cover_image) }}" class="w-full h-full object-cover">
-                        @endif
+                        <img src="{{ $book->cover_image_url }}" class="w-full h-full object-cover">
                         <div class="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[9px] font-black text-[#062C2C] shadow-sm flex items-center gap-1">
                             ★ {{ number_format($book->ratings_avg_rating ?? 0, 1) }}
                         </div>
@@ -104,9 +100,7 @@
             @foreach($newArrivals as $book)
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-3 border border-slate-100">
-                        @if($book->cover_image)
-                            <img src="{{ Str::startsWith($book->cover_image, 'http') ? $book->cover_image : asset('storage/' . $book->cover_image) }}" class="w-full h-full object-cover">
-                        @endif
+                        <img src="{{ $book->cover_image_url }}" class="w-full h-full object-cover">
                     </div>
                     <div class="mt-4">
                         <h4 class="font-black text-[#062C2C] truncate text-[10px] uppercase tracking-tight">{{ $book->title }}</h4>
