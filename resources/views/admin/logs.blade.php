@@ -7,30 +7,30 @@
         </div>
 
         <!-- Table Container -->
-        <div class="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-[#EFEFE9] overflow-hidden">
+        <div class="bg-[#062C2C] rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/5 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-[#FAF9F6] border-b border-[#EFEFE9]">
-                            <th class="px-8 py-6 text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">Timestamp</th>
-                            <th class="px-8 py-6 text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">User</th>
-                            <th class="px-8 py-6 text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">Action</th>
-                            <th class="px-8 py-6 text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">Description</th>
+                        <tr class="bg-white/5 border-b border-white/5">
+                            <th class="px-8 py-6 text-[10px] font-black text-white/70 uppercase tracking-widest">Timestamp</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-white/70 uppercase tracking-widest">User</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-white/70 uppercase tracking-widest">Action</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-white/70 uppercase tracking-widest">Description</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-[#F5F5F0]">
+                    <tbody class="divide-y divide-white/5">
                         @forelse($logs as $log)
-                            <tr class="hover:bg-[#FAF9F6] transition-colors duration-300">
+                            <tr class="hover:bg-white/5 transition-colors duration-300">
                                 <td class="px-8 py-6">
-                                    <p class="text-sm font-bold text-[#1A1A1A]">{{ $log->created_at->format('d M Y') }}</p>
-                                    <p class="text-[10px] text-[#888888] font-medium uppercase mt-0.5">{{ $log->created_at->format('H:i:s') }}</p>
+                                    <p class="text-sm font-bold text-white">{{ $log->created_at->format('d M Y') }}</p>
+                                    <p class="text-[10px] text-white/40 font-medium uppercase mt-0.5">{{ $log->created_at->format('H:i:s') }}</p>
                                 </td>
                                 <td class="px-8 py-6">
                                     <div class="flex items-center gap-3">
-                                        <div class="h-8 w-8 rounded-full bg-[#F0F0EB] flex items-center justify-center text-xs font-black text-[#1A1A1A]">
+                                        <div class="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-black text-white">
                                             {{ substr($log->user->name ?? 'S', 0, 1) }}
                                         </div>
-                                        <span class="text-sm font-bold text-[#1A1A1A]">{{ $log->user->name ?? 'System' }}</span>
+                                        <span class="text-sm font-bold text-white/90">{{ $log->user->name ?? 'System' }}</span>
                                     </div>
                                 </td>
                                 <td class="px-8 py-6">

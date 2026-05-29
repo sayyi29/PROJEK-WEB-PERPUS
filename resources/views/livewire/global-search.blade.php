@@ -1,39 +1,22 @@
 <div x-data="{ open: false }" class="relative w-full">
-    <!-- Dynamic Search Bar - Soft Paper Style -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-[#E8E4D9] p-1.5 flex flex-col md:flex-row items-center gap-2 transition-all focus-within:shadow-lg focus-within:border-[#B8860B]">
+    <!-- Compact Minimalist Search Bar -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-1 flex items-center gap-2 transition-all focus-within:shadow-md focus-within:border-[#B8860B] w-full max-w-sm">
         
-        <!-- 1. Category Dropdown (Fully Customized) -->
-        <div class="relative w-full md:w-auto min-w-[210px] group/select">
-            <select class="w-full bg-[#F9F7F2] border border-[#E8E4D9] rounded-2xl py-3.5 pl-6 pr-12 text-[10px] font-black text-[#062C2C] uppercase tracking-[0.2em] cursor-pointer appearance-none focus:ring-2 focus:ring-[#B8860B]/10 focus:border-[#B8860B] transition-all hover:bg-white">
-                <option>All Classifications</option>
-                @php $searchCategories = \App\Models\Category::all(); @endphp
-                @foreach($searchCategories as $cat)
-                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @endforeach
-            </select>
-            <!-- Custom Arrow - Replaces browser default -->
-            <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-[#B8860B] transition-transform group-hover/select:translate-y-[-40%]">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </div>
-        </div>
-
-        <!-- 2. Text Input -->
-        <div class="flex-1 relative w-full group">
-            <div class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#B8860B] transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        <!-- Icon & Input -->
+        <div class="flex-1 relative flex items-center group">
+            <div class="pl-4 text-slate-300 group-focus-within:text-[#B8860B] transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
             <input type="text" 
                    wire:model.live.debounce.300ms="query"
                    @focus="open = true"
-                   class="w-full bg-transparent border-0 py-3.5 pl-14 pr-6 text-sm text-[#062C2C] placeholder-slate-300 font-bold focus:ring-0" 
-                   placeholder="Enter asset protocol or title...">
+                   class="w-full bg-transparent border-0 py-2 pl-3 pr-4 text-xs text-[#062C2C] placeholder-slate-300 font-bold focus:ring-0" 
+                   placeholder="Search assets...">
         </div>
 
-        <!-- 3. Search Button -->
-        <button wire:click="search" class="w-full md:w-auto bg-[#062C2C] hover:bg-[#041E1E] text-white px-10 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] transition-all active:scale-95 shadow-xl shadow-[#062C2C]/10">
-            Execute
+        <!-- Mini Execute Button -->
+        <button wire:click="search" class="bg-[#062C2C] hover:bg-[#041E1E] text-white p-2 rounded-xl transition-all active:scale-90 shadow-lg">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
         </button>
     </div>
 

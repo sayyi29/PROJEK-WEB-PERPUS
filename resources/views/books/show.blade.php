@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between w-full">
             <div class="flex items-center gap-6">
                 <a href="{{ url()->previous() }}" 
-                   class="p-4 bg-white rounded-[1.5rem] hover:bg-slate-50 transition-all duration-300 text-[#062C2C] border border-slate-100 shadow-xl hover:scale-110 active:scale-95 group">
+                   class="p-4 bg-[#062C2C] rounded-[1.5rem] hover:bg-[#041E1E] transition-all duration-300 text-white border border-white/5 shadow-xl hover:scale-110 active:scale-95 group">
                     <svg class="w-6 h-6 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
@@ -21,43 +21,43 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-4xl mx-auto px-6">
-            <div id="book-detail-card" class="bg-white p-16 rounded-[4rem] border border-slate-100 shadow-[0_50px_100px_rgba(6,44,44,0.1)] relative overflow-hidden">
-                <div class="absolute -top-24 -right-24 w-64 h-64 bg-[#062C2C]/5 rounded-full blur-[80px]"></div>
+        <div class="relative">
+            <div id="book-detail-card" class="bg-[#062C2C] p-16 rounded-[4rem] border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.3)] relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-[80px]"></div>
                 
-                <div class="relative grid grid-cols-1 md:grid-cols-3 gap-16">
+                <div class="relative grid grid-cols-1 md:grid-cols-3 gap-16 text-[#F9F7F2]">
                     <!-- Book Cover -->
                     <div class="md:col-span-1 flex justify-center items-center">
-                        <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="w-full h-auto max-h-96 object-contain rounded-3xl shadow-xl border border-slate-50">
+                        <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="w-full h-auto max-h-96 object-contain rounded-3xl shadow-xl border border-white/10">
                     </div>
 
                     <!-- Book Details -->
                     <div class="md:col-span-2 space-y-10">
                         <div>
-                            <h3 class="text-3xl font-black text-[#062C2C] tracking-tighter uppercase italic leading-none mb-4">{{ $book->title }}</h3>
+                            <h3 class="text-3xl font-black text-white tracking-tighter uppercase italic leading-none mb-4">{{ $book->title }}</h3>
                             <p class="text-[#B8860B] font-bold text-xs uppercase tracking-[0.3em]">{{ $book->author }}</p>
-                            <p class="text-slate-400 text-sm mt-1">{{ $book->publisher }}, {{ $book->year }}</p>
+                            <p class="text-white/40 text-sm mt-1">{{ $book->publisher }}, {{ $book->year }}</p>
                         </div>
 
                         <div class="space-y-6">
                             <div class="grid grid-cols-2 gap-8">
                                 <div>
-                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2">ISBN</h4>
-                                    <p class="text-[#062C2C] font-bold text-base">{{ $book->isbn }}</p>
+                                    <h4 class="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-2">ISBN</h4>
+                                    <p class="text-white font-bold text-base">{{ $book->isbn }}</p>
                                 </div>
                                 <div>
-                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2">Kategori</h4>
-                                    <p class="text-[#062C2C] font-bold text-base">{{ $book->category->name ?? 'N/A' }}</p>
+                                    <h4 class="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-2">Kategori</h4>
+                                    <p class="text-white font-bold text-base">{{ $book->category->name ?? 'N/A' }}</p>
                                 </div>
                             </div>
                             <div>
-                                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2">Stok Tersedia</h4>
-                                <p class="text-{{ $book->stock > 0 ? 'emerald-600' : 'rose-900' }} font-black text-xl">{{ $book->stock }}</p>
+                                <h4 class="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-2">Stok Tersedia</h4>
+                                <p class="text-{{ $book->stock > 0 ? 'emerald-400' : 'rose-400' }} font-black text-xl">{{ $book->stock }}</p>
                             </div>
                             @if ($book->description)
                                 <div>
-                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2">Deskripsi</h4>
-                                    <p class="text-slate-600 text-sm leading-relaxed">{{ $book->description }}</p>
+                                    <h4 class="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-2">Deskripsi</h4>
+                                    <p class="text-white/60 text-sm leading-relaxed">{{ $book->description }}</p>
                                 </div>
                             @endif
                         </div>

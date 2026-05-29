@@ -7,13 +7,13 @@
     </button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-8 bg-white rounded-[2rem]">
+        <form method="post" action="{{ route('profile.destroy') }}" class="p-8 bg-[#062C2C] rounded-[2rem] text-white">
             @csrf
             @method('delete')
 
-            <h2 class="text-xl font-black text-[#1A1A1A] uppercase tracking-tighter">Confirm Deletion</h2>
+            <h2 class="text-xl font-black text-white uppercase tracking-tighter">Confirm Deletion</h2>
 
-            <p class="mt-4 text-[10px] font-bold text-[#888888] leading-relaxed uppercase tracking-widest">
+            <p class="mt-4 text-[10px] font-bold text-white/40 leading-relaxed uppercase tracking-widest">
                 Please enter your password to confirm permanent deletion.
             </p>
 

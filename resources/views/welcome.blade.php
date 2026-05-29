@@ -26,7 +26,7 @@
                 background: linear-gradient(135deg, #062C2C 0%, #041E1E 100%);
             }
 
-            .glass-effect {
+            .glass-card {
                 background: rgba(255, 255, 255, 0.05);
                 backdrop-filter: blur(20px);
                 border: 1px solid rgba(255, 255, 255, 0.1);

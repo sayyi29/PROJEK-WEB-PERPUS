@@ -21,12 +21,12 @@
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-10 items-start">
             
             <!-- Left: Profile Info -->
-            <div class="xl:col-span-7 premium-card rounded-[2.5rem] overflow-hidden">
-                <div class="px-10 py-6 border-b border-[#F9F7F2] bg-[#FDFCF9] flex items-center gap-3">
+            <div class="xl:col-span-7 bg-[#062C2C] rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
+                <div class="px-10 py-6 border-b border-white/5 bg-white/5 flex items-center gap-3">
                     <div class="w-2 h-2 rounded-full bg-[#B8860B]"></div>
-                    <h3 class="text-[11px] font-black text-[#062C2C] uppercase tracking-widest">Personal Protocol</h3>
+                    <h3 class="text-[11px] font-black text-white uppercase tracking-widest">Personal Protocol</h3>
                 </div>
-                <div class="p-10">
+                <div class="p-10 text-white">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
@@ -34,12 +34,12 @@
             <!-- Right: Security & Actions -->
             <div class="xl:col-span-5 space-y-10">
                 <!-- Security Card -->
-                <div class="premium-card rounded-[2.5rem] overflow-hidden">
-                    <div class="px-10 py-6 border-b border-[#F9F7F2] bg-[#FDFCF9] flex items-center gap-3">
-                        <div class="w-2 h-2 rounded-full bg-[#062C2C]"></div>
-                        <h3 class="text-[11px] font-black text-[#062C2C] uppercase tracking-widest">Access & Security</h3>
+                <div class="bg-[#062C2C] rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
+                    <div class="px-10 py-6 border-b border-white/5 bg-white/5 flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-[#B8860B]"></div>
+                        <h3 class="text-[11px] font-black text-white uppercase tracking-widest">Access & Security</h3>
                     </div>
-                    <div class="p-10">
+                    <div class="p-10 text-white">
                         @include('profile.partials.update-password-form')
                     </div>
                 </div>
@@ -62,19 +62,23 @@
     <style>
         /* Unified Form Controls for Soft Paper Theme */
         input, textarea, select {
-            background-color: #FDFCF9 !important; /* Very soft cream */
-            border: 1px solid #E8E4D9 !important; 
+            background-color: rgba(255, 255, 255, 0.05) !important; 
+            border: 1px solid rgba(255, 255, 255, 0.1) !important; 
             border-radius: 16px !important;
             padding: 0.85rem 1.25rem !important;
             font-size: 0.85rem !important;
             font-weight: 500 !important;
-            color: #062C2C !important; 
+            color: #FFFFFF !important; 
             transition: all 0.3s ease !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: none !important;
         }
         input:focus {
-            background-color: #FFFFFF !important;
+            background-color: rgba(255, 255, 255, 0.1) !important;
             border-color: #B8860B !important;
-            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.05) !important;
+            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.1) !important;
             outline: none !important;
         }
         label {
@@ -82,13 +86,24 @@
             font-weight: 800 !important;
             text-transform: uppercase !important;
             letter-spacing: 0.15em !important;
-            color: #062C2C !important;
-            opacity: 0.6;
+            color: rgba(255, 255, 255, 0.4) !important;
             margin-bottom: 0.6rem !important;
             display: block;
         }
+
+        /* Danger Zone Override (Stay Light) */
+        .premium-card input, .premium-card textarea, .premium-card select {
+            background-color: #FDFCF9 !important;
+            border: 1px solid #E8E4D9 !important;
+            color: #062C2C !important;
+        }
+        .premium-card label {
+            color: #062C2C !important;
+            opacity: 0.6;
+        }
+
         button[type="submit"] {
-            background-color: #062C2C !important;
+            background-color: #B8860B !important;
             color: #FFFFFF !important;
             padding: 1rem 2rem !important;
             border-radius: 16px !important;
@@ -97,12 +112,12 @@
             text-transform: uppercase !important;
             letter-spacing: 0.2em !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            box-shadow: 0 10px 30px rgba(6, 44, 44, 0.1) !important;
+            box-shadow: 0 10px 30px rgba(184, 134, 11, 0.1) !important;
         }
         button[type="submit"]:hover {
-            background-color: #041E1E !important;
+            background-color: #8B6508 !important;
             transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(6, 44, 44, 0.2) !important;
+            box-shadow: 0 15px 40px rgba(184, 134, 11, 0.2) !important;
         }
         .space-y-6 > * + * { margin-top: 1.5rem !important; }
     </style>

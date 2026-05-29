@@ -1,9 +1,9 @@
 <section>
     <div class="mb-10">
-        <h3 class="text-xl font-black text-[#1A1A1A] tracking-tight uppercase tracking-widest">
+        <h3 class="text-xl font-black text-white tracking-tight uppercase tracking-widest">
             {{ __('Update Password') }}
         </h3>
-        <p class="mt-2 text-[#888888] font-bold text-[10px] uppercase tracking-[0.2em]">
+        <p class="mt-2 text-white/40 font-bold text-[10px] uppercase tracking-[0.2em]">
             {{ __('Ensure your account is using a long, random password.') }}
         </p>
     </div>

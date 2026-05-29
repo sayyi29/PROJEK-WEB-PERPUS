@@ -25,7 +25,7 @@
                     {{ __('messages.categories_racks') }}
                 </x-sidebar-link>
                 @php
-                    $pendingMembers = \App\Models\User::where('status', 'pending')->count();
+                    $pendingMembers = \App\Models\User::role('anggota')->where('status', 'pending_approval')->count();
                 @endphp
                 <x-sidebar-link :href="route('members.index')" :active="request()->routeIs('members.*')" icon="members" :badge="$pendingMembers > 0 ? $pendingMembers : null" badgeColor="bg-[#B8860B]">
                     {{ __('messages.data_members') }}
@@ -34,13 +34,19 @@
 
             <div class="space-y-2">
                 <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.4em] mb-4 px-4">{{ __('messages.transaction_circulation') }}</p>
+                <x-sidebar-link :href="route('borrowings.create')" :active="request()->routeIs('borrowings.create')" icon="library">
+                    Borrow
+                </x-sidebar-link>
+                <x-sidebar-link :href="route('returns.create')" :active="request()->routeIs('returns.create')" icon="discover">
+                    Return
+                </x-sidebar-link>
                 @php
                     $overdueCount = \App\Models\Borrowing::where('status', 'overdue')->count();
                 @endphp
-                <x-sidebar-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.*')" icon="library" :badge="$overdueCount > 0 ? $overdueCount : null" badgeColor="bg-rose-900">
+                <x-sidebar-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.index')" icon="library" :badge="$overdueCount > 0 ? $overdueCount : null" badgeColor="bg-rose-900">
                     {{ __('messages.borrowings') }}
                 </x-sidebar-link>
-                <x-sidebar-link :href="route('returns.index')" :active="request()->routeIs('returns.*')" icon="discover">
+                <x-sidebar-link :href="route('returns.index')" :active="request()->routeIs('returns.index')" icon="discover">
                     {{ __('messages.return') }}
                 </x-sidebar-link>
             </div>
@@ -68,11 +74,17 @@
                 @php
                     $activeLoans = \App\Models\Borrowing::where('user_id', auth()->id())->where('status', 'borrowed')->count();
                 @endphp
-                <x-sidebar-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.*')" icon="library" :badge="$activeLoans > 0 ? $activeLoans : null" badgeColor="bg-[#B8860B]">
+                <x-sidebar-link :href="route('borrowings.create')" :active="request()->routeIs('borrowings.create')" icon="library">
+                    Borrow
+                </x-sidebar-link>
+                <x-sidebar-link :href="route('returns.create')" :active="request()->routeIs('returns.create')" icon="discover">
+                    Return
+                </x-sidebar-link>
+                <x-sidebar-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.index')" icon="library" :badge="$activeLoans > 0 ? $activeLoans : null" badgeColor="bg-[#B8860B]">
                     My Collection
                 </x-sidebar-link>
 
-                <x-sidebar-link :href="route('returns.index')" :active="request()->routeIs('returns.*')" icon="discover">
+                <x-sidebar-link :href="route('returns.index')" :active="request()->routeIs('returns.index')" icon="discover">
                     Reading History
                 </x-sidebar-link>
 

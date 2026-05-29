@@ -39,17 +39,17 @@
         </div>
 
         <!-- Reservations Status -->
-        <div class="bg-[#062C2C] p-10 rounded-[3rem] text-white shadow-2xl shadow-[#062C2C]/20">
-            <h3 class="text-lg font-black uppercase tracking-tight mb-8 text-[#B8860B]">Reservations</h3>
+        <div class="premium-card p-10 rounded-[3rem]">
+            <h3 class="text-lg font-black uppercase tracking-tight mb-8 text-[#062C2C]">Reservations</h3>
             @if($reservations->count() > 0)
                 <div class="space-y-6">
                     @foreach($reservations as $res)
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-14 bg-white/10 rounded-lg overflow-hidden flex-shrink-0">
+                            <div class="w-10 h-14 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 border border-slate-100">
                                 <img src="{{ $res->book->cover_image_url }}" class="w-full h-full object-cover">
                             </div>
                             <div>
-                                <p class="text-[10px] font-black uppercase truncate w-32">{{ $res->book->title }}</p>
+                                <p class="text-[10px] font-black uppercase truncate w-32 text-[#062C2C]">{{ $res->book->title }}</p>
                                 <span class="text-[9px] font-bold text-[#B8860B] uppercase tracking-widest">In Queue...</span>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                 </div>
             @else
                 <div class="text-center py-10 opacity-40">
-                    <p class="text-xs font-bold uppercase tracking-widest">No active reservations</p>
+                    <p class="text-xs font-bold text-[#062C2C] uppercase tracking-widest">No active reservations</p>
                 </div>
             @endif
         </div>

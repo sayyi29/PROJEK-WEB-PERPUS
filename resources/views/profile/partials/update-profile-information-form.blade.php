@@ -1,9 +1,9 @@
 <section>
     <div class="mb-10">
-        <h3 class="text-xl font-black text-[#1A1A1A] tracking-tight uppercase tracking-widest">
+        <h3 class="text-xl font-black text-white tracking-tight uppercase tracking-widest">
             {{ __('messages.account_profile') }}
         </h3>
-        <p class="mt-2 text-[#888888] font-bold text-[10px] uppercase tracking-[0.2em]">
+        <p class="mt-2 text-white/40 font-bold text-[10px] uppercase tracking-[0.2em]">
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </div>
@@ -21,11 +21,11 @@
             <x-input-label for="profile_photo" :value="__('messages.profile_photo')" />
             
             <div class="flex items-center gap-6">
-                <div class="w-20 h-20 rounded-2xl bg-[#FAF9F6] border-2 border-dashed border-[#EFEFE9] flex items-center justify-center overflow-hidden transition-all duration-500">
+                <div class="w-20 h-20 rounded-2xl bg-white/5 border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden transition-all duration-500">
                     @if ($user->profile_photo_path)
                         <img id="preview" src="{{ asset('storage/' . $user->profile_photo_path) }}" class="w-full h-full object-cover">
                     @else
-                        <div id="placeholder" class="text-[#888888]">
+                        <div id="placeholder" class="text-white/20">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
@@ -35,7 +35,7 @@
 
                 <div class="flex-1 space-y-2">
                     <input id="profile_photo" name="profile_photo" type="file" class="hidden" accept="image/*" onchange="previewImage(event)" />
-                    <button type="button" onclick="document.getElementById('profile_photo').click()" class="px-5 py-2.5 bg-[#FAF9F6] border border-[#EFEFE9] rounded-xl text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest hover:bg-[#EFEFE9] transition-all">
+                    <button type="button" onclick="document.getElementById('profile_photo').click()" class="px-5 py-2.5 bg-white/10 border border-white/10 rounded-xl text-[10px] font-black text-white uppercase tracking-widest hover:bg-white/20 transition-all">
                         {{ __('messages.click_to_upload') }}
                     </button>
                 </div>
