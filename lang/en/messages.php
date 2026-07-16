@@ -41,6 +41,8 @@ return [
     'book_available_notification_action' => 'View Book Details',
     'book_available_notification_thanks' => 'Please collect it from the library soon.',
     'welcome_message_login' => 'Welcome back to Lumina.',
+    'account_pending_approval' => 'Your account is pending admin approval. Please contact the librarian.',
+    'account_inactive' => 'Your account is deactivated. Please contact the librarian.',
     'enter_email' => 'example@mail.com',
     'email_address' => 'Email Address',
     'password' => 'Password',

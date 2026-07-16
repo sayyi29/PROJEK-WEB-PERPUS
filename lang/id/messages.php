@@ -41,6 +41,8 @@ return [
     'book_available_notification_action' => 'Lihat Detail Buku',
     'book_available_notification_thanks' => 'Silakan segera ambil di perpustakaan.',
     'welcome_message_login' => 'Selamat datang kembali di Lumina.',
+    'account_pending_approval' => 'Akun Anda sedang menunggu persetujuan admin. Silakan hubungi petugas.',
+    'account_inactive' => 'Akun Anda dinonaktifkan. Silakan hubungi petugas.',
     'enter_email' => 'contoh@mail.com',
     'email_address' => 'Alamat Email',
     'password' => 'Kata Sandi',

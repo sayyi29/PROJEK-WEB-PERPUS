@@ -16,6 +16,11 @@
     <style>
         [x-cloak] { display: none !important; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow: hidden; background-color: #062C2C; cursor: none; }
+        #auth-panel { overflow-y: auto; justify-content: flex-start !important; }
+        #auth-panel::-webkit-scrollbar { width: 4px; }
+        #auth-panel::-webkit-scrollbar-track { background: transparent; }
+        #auth-panel::-webkit-scrollbar-thumb { background: #B8860B; border-radius: 999px; }
+        #auth-panel::-webkit-scrollbar-thumb:hover { background: #DAA520; }
         #three-container { position: absolute; inset: 0; z-index: 1; background: linear-gradient(135deg, #062C2C 0%, #041E1E 100%); }
         #custom-cursor { position: fixed; width: 8px; height: 8px; background: #B8860B; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transform: translate(-100px, -100px); }
         #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid #B8860B; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-100px, -100px); transition: transform 0.15s ease-out; }
@@ -52,7 +57,7 @@
         </div>
 
         <div id="auth-panel" class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-28 glass-panel">
-            <div class="mx-auto w-full max-sm lg:w-96">{{ $slot }}</div>
+            <div class="mx-auto w-full max-sm lg:w-96 my-auto py-8">{{ $slot }}</div>
         </div>
     </div>
 

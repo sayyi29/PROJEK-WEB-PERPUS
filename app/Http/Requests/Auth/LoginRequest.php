@@ -50,6 +50,19 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        $user = Auth::user();
+        if ($user->status === 'pending_approval') {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => __('messages.account_pending_approval'),
+            ]);
+        } elseif ($user->status === 'inactive') {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => __('messages.account_inactive'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
