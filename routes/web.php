@@ -7,28 +7,41 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 
 Route::get('/', function () {
-    try {
-        // Coba ambil dari API dengan timeout lebih lama
-        $response = Http::timeout(10)->get('https://www.googleapis.com/books/v1/volumes', [
-            'q' => 'trending+fiction+novels',
-            'orderBy' => 'relevance',
-            'maxResults' => 8,
-        ]);
+    // ─── Latest Books dari database lokal ────────────────────────────────
+    $latestBooks = \App\Models\Book::with('category')->latest()->take(4)->get();
 
-        if ($response->successful()) {
-            $externalBooks = $response->json()['items'] ?? [];
-        } else {
-            $externalBooks = []; // API error
+    // ─── Global Trends via Google Books API (cache 1 jam di VPS) ─────────
+    $externalBooks = \Illuminate\Support\Facades\Cache::remember('google_books_trending', 3600, function () {
+        try {
+            $apiKey = config('services.google_books.key');
+            $response = \Illuminate\Support\Facades\Http::timeout(10)
+                ->withHeaders(['Accept' => 'application/json'])
+                ->get('https://www.googleapis.com/books/v1/volumes', [
+                    'q'        => 'trending+fiction+bestseller',
+                    'orderBy'  => 'relevance',
+                    'maxResults' => 8,
+                    'key'      => $apiKey,
+                    'langRestrict' => 'en',
+                ]);
+
+            if ($response->successful()) {
+                $items = $response->json()['items'] ?? [];
+                if (!empty($items)) return $items;
+            }
+
+            \Log::warning('Google Books API response not successful', [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Google Books API Error (welcome): ' . $e->getMessage());
         }
-    } catch (\Exception $e) {
-        \Log::error('API Error: ' . $e->getMessage());
-        $externalBooks = []; // Koneksi error
-    }
+        return [];
+    });
 
-    $latestBooks = \App\Models\Book::latest()->take(4)->get();
-    
     return view('welcome', compact('latestBooks', 'externalBooks'));
 });
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 

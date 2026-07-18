@@ -11,7 +11,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+    {{-- ─── SAFETY FALLBACK (sebelum CDN dimuat) ──────────────────────────── --}}
+    {{-- Jika Three.js / GSAP / WebGL gagal, form TETAP muncul dalam 6 detik --}}
+    <script>
+        window._luminaReady = false;
+
+        /** Paksa panel login tampil — dipanggil dari mana saja sebagai fallback */
+        window.showAuthPanelFallback = function () {
+            if (window._luminaReady) return;
+            window._luminaReady = true;
+            clearTimeout(window._luminaFallbackTimer);
+
+            var loader = document.getElementById('loader-overlay');
+            var panel  = document.getElementById('auth-panel');
+            var logo   = document.getElementById('logo-container');
+
+            if (loader) {
+                loader.style.transition = 'opacity 0.4s ease';
+                loader.style.opacity    = '0';
+                setTimeout(function () { if (loader.parentNode) loader.remove(); }, 450);
+            }
+            if (panel) {
+                panel.style.transition  = 'opacity 0.6s ease, transform 0.8s ease';
+                panel.style.opacity     = '1';
+                panel.style.transform   = 'translateX(0)';
+            }
+            if (logo) { logo.style.opacity = '1'; }
+
+            document.querySelectorAll('.reveal-up').forEach(function (el) {
+                el.classList.add('active');
+            });
+        };
+
+        /** Hard-timeout: 6 detik — jika animasi masih belum selesai, paksa tampil */
+        window._luminaFallbackTimer = setTimeout(window.showAuthPanelFallback, 6000);
+    </script>
+
+    {{-- GSAP dengan onerror: jika CDN gagal → tampilkan form langsung --}}
+    <script
+        src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"
+        onerror="window._gsapFailed = true; window.showAuthPanelFallback();"
+    ></script>
 
     <style>
         [x-cloak] { display: none !important; }
@@ -29,7 +70,17 @@
         .loader-ring { width: 50px; height: 50px; border: 3px solid rgba(184, 134, 11, 0.1); border-top-color: #B8860B; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(40px); border-left: 1px solid rgba(255, 255, 255, 0.5); box-shadow: -20px 0 50px rgba(0, 0, 0, 0.2); opacity: 0; transform: translateX(100%); transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 20; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(40px);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: -20px 0 50px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            z-index: 20;
+        }
         .glass-panel.active { opacity: 1; transform: translateX(0); }
 
         .reveal-up { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -63,189 +114,225 @@
 
     <script type="importmap"> { "imports": { "three": "https://unpkg.com/three@0.146.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.146.0/examples/jsm/" } } </script>
     <script type="module">
-        import * as THREE from 'three';
-
-        const container = document.getElementById('three-container');
-        const cursor = document.getElementById('custom-cursor');
-        const follower = document.getElementById('cursor-follower');
-        const authPanel = document.getElementById('auth-panel');
+        // ─── Helper terpusat: tampilkan panel dengan GSAP jika ada, CSS jika tidak ─
+        const authPanel     = document.getElementById('auth-panel');
         const logoContainer = document.getElementById('logo-container');
         const loaderOverlay = document.getElementById('loader-overlay');
-        
+
+        function showPanel() {
+            if (window._luminaReady) return;
+            window._luminaReady = true;
+            clearTimeout(window._luminaFallbackTimer);
+
+            if (typeof gsap !== 'undefined') {
+                gsap.to(loaderOverlay, { opacity: 0, duration: 0.6, onComplete: () => loaderOverlay.remove() });
+            } else {
+                window.showAuthPanelFallback();
+                return;
+            }
+
+            authPanel.classList.add('active');
+            logoContainer.style.opacity = 1;
+            document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('active'));
+        }
+
+        // ─── Cursor ──────────────────────────────────────────────────────────────
+        const cursor   = document.getElementById('custom-cursor');
+        const follower = document.getElementById('cursor-follower');
         let mouseX = 0, mouseY = 0;
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX; mouseY = e.clientY;
-            cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+            cursor.style.transform   = `translate(${mouseX}px, ${mouseY}px)`;
             follower.style.transform = `translate(${mouseX - 20}px, ${mouseY - 20}px)`;
         });
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 12);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        // Advanced Lighting
-        scene.add(new THREE.AmbientLight(0xffffff, 0.3));
-        const spotLight = new THREE.SpotLight(0xB8860B, 2);
-        spotLight.position.set(10, 10, 10);
-        spotLight.angle = 0.15;
-        spotLight.penumbra = 1;
-        scene.add(spotLight);
-
-        const pointLight = new THREE.PointLight(0xB8860B, 1.5);
-        pointLight.position.set(-5, -5, 5);
-        scene.add(pointLight);
-
-        // Lumina Core Group
-        const coreGroup = new THREE.Group();
-        coreGroup.position.y = 15; // Start high for entrance
-        scene.add(coreGroup);
-
-        // 1. The Core Orb
-        const coreGeom = new THREE.IcosahedronGeometry(1.8, 15);
-        const coreMat = new THREE.MeshStandardMaterial({
-            color: 0x062C2C,
-            emissive: 0xB8860B,
-            emissiveIntensity: 0.4,
-            metalness: 0.9,
-            roughness: 0.1,
-        });
-        const core = new THREE.Mesh(coreGeom, coreMat);
-        coreGroup.add(core);
-
-        // 2. Orbital Rings
-        const createRing = (radius, rotationX, rotationZ) => {
-            const geom = new THREE.TorusGeometry(radius, 0.015, 16, 100);
-            const mat = new THREE.MeshStandardMaterial({ 
-                color: 0xB8860B, 
-                emissive: 0xB8860B, 
-                emissiveIntensity: 1 
-            });
-            const ring = new THREE.Mesh(geom, mat);
-            ring.rotation.x = rotationX;
-            ring.rotation.z = rotationZ;
-            return ring;
-        };
-
-        const rings = [
-            createRing(2.5, Math.PI/2.2, 0),
-            createRing(2.8, Math.PI/4, Math.PI/4),
-            createRing(3.2, -Math.PI/3, -Math.PI/6)
-        ];
-        rings.forEach(ring => coreGroup.add(ring));
-
-        // 3. Digital Dust Particles (Starfield Effect)
-        const particlesGeometry = new THREE.BufferGeometry();
-        const count = 8000; // Increased significantly
-        const positions = new Float32Array(count * 3);
-        for(let i=0; i<count*3; i++) {
-            positions[i] = (Math.random() - 0.5) * 50; // Wider spread
-        }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particlesMaterial = new THREE.PointsMaterial({ 
-            color: 0xB8860B, 
-            size: 0.08, // Larger particles
-            transparent: true, 
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending 
-        });
-        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particles);
-
-        // Shockwave effect
-        const wave = new THREE.Mesh(
-            new THREE.RingGeometry(0.1, 0.3, 64), 
-            new THREE.MeshBasicMaterial({ color: 0xB8860B, transparent: true, opacity: 0, side: THREE.DoubleSide })
-        );
-        wave.rotation.x = -Math.PI / 2; wave.position.y = -3;
-        scene.add(wave);
-
-        let isLanded = false;
-
-        function triggerEntrance() {
-            gsap.to(coreGroup.position, {
-                y: 0, duration: 2.5, ease: "power4.out",
-                onComplete: () => {
-                    isLanded = true;
-                    gsap.to(wave.scale, { x: 100, y: 100, duration: 2, ease: "power2.out" });
-                    gsap.to(wave.material, { opacity: 1, duration: 0.1 });
-                    gsap.to(wave.material, { opacity: 0, duration: 1.5, delay: 0.1 });
-                    authPanel.classList.add('active');
-                    logoContainer.style.opacity = 1;
-                    document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('active'));
-                }
-            });
+        // ─── WebGL check: jika tidak didukung, tampilkan form langsung ───────────
+        function isWebGLAvailable() {
+            try {
+                const c = document.createElement('canvas');
+                return !!(window.WebGLRenderingContext &&
+                    (c.getContext('webgl') || c.getContext('experimental-webgl')));
+            } catch (e) { return false; }
         }
 
-        // Knowledge Reaction (Input Interactivity)
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                gsap.to(core.scale, { x: 1.15, y: 1.15, z: 1.15, duration: 0.6, ease: "back.out(2)" });
-                gsap.to(coreMat, { emissiveIntensity: 1.2, duration: 0.6 });
-            });
-            input.addEventListener('blur', () => {
-                gsap.to(core.scale, { x: 1, y: 1, z: 1, duration: 0.6, ease: "back.out(2)" });
-                gsap.to(coreMat, { emissiveIntensity: 0.4, duration: 0.6 });
-            });
-        });
-
-        // Initial Start
-        setTimeout(() => {
-            gsap.to(loaderOverlay, { 
-                opacity: 0, 
-                duration: 1, 
-                onComplete: () => { 
-                    loaderOverlay.remove(); 
-                    triggerEntrance(); 
-                }
-            });
-        }, 1000);
-
-        const clock = new THREE.Clock();
-        function animate() {
-            requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-            const t = clock.getElapsedTime();
-
-            if(isLanded) {
-                // Floating Motion
-                coreGroup.position.y = Math.sin(t * 0.5) * 0.3;
-                
-                // Rotation
-                core.rotation.y += delta * 0.2;
-                rings[0].rotation.z += delta * 0.4;
-                rings[1].rotation.x += delta * 0.3;
-                rings[2].rotation.y += delta * 0.2;
-
-                // Mouse Parallax
-                coreGroup.rotation.x += (-(mouseY/window.innerHeight - 0.5) * 0.3 - coreGroup.rotation.x) * 0.05;
-                coreGroup.rotation.y += ((mouseX/window.innerWidth - 0.5) * 0.3 - coreGroup.rotation.y) * 0.05;
-                
-                // Offset the core to the left side of the screen
-                coreGroup.position.x = -5;
-                wave.position.x = -5;
+        if (!isWebGLAvailable()) {
+            console.warn('LUMINA: WebGL tidak tersedia, menampilkan form langsung.');
+            showPanel();
+        } else {
+            // ─── Three.js scene ────────────────────────────────────────────────
+            let THREE;
+            try {
+                THREE = await import('three');
+            } catch (importErr) {
+                console.warn('LUMINA: Three.js CDN gagal dimuat —', importErr.message);
+                showPanel();
             }
 
-            particles.rotation.y += delta * 0.05;
-            
-            camera.position.x += ((mouseX/window.innerWidth - 0.5)*2 - camera.position.x) * 0.05;
-            camera.position.y += (-(mouseY/window.innerHeight - 0.5)*2 - camera.position.y) * 0.05;
-            camera.lookAt(0,0,0);
-            
-            renderer.render(scene, camera);
-        }
-        animate();
+            if (THREE) {
+                try {
+                    const container = document.getElementById('three-container');
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+                    const scene  = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+                    camera.position.set(0, 0, 12);
+
+                    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    container.appendChild(renderer.domElement);
+
+                    // Advanced Lighting
+                    scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+                    const spotLight = new THREE.SpotLight(0xB8860B, 2);
+                    spotLight.position.set(10, 10, 10);
+                    spotLight.angle = 0.15;
+                    spotLight.penumbra = 1;
+                    scene.add(spotLight);
+
+                    const pointLight = new THREE.PointLight(0xB8860B, 1.5);
+                    pointLight.position.set(-5, -5, 5);
+                    scene.add(pointLight);
+
+                    // Lumina Core Group
+                    const coreGroup = new THREE.Group();
+                    coreGroup.position.y = 15;
+                    scene.add(coreGroup);
+
+                    // 1. The Core Orb
+                    const coreGeom = new THREE.IcosahedronGeometry(1.8, 15);
+                    const coreMat  = new THREE.MeshStandardMaterial({
+                        color: 0x062C2C, emissive: 0xB8860B,
+                        emissiveIntensity: 0.4, metalness: 0.9, roughness: 0.1,
+                    });
+                    const core = new THREE.Mesh(coreGeom, coreMat);
+                    coreGroup.add(core);
+
+                    // 2. Orbital Rings
+                    const createRing = (radius, rotationX, rotationZ) => {
+                        const geom = new THREE.TorusGeometry(radius, 0.015, 16, 100);
+                        const mat  = new THREE.MeshStandardMaterial({
+                            color: 0xB8860B, emissive: 0xB8860B, emissiveIntensity: 1
+                        });
+                        const ring = new THREE.Mesh(geom, mat);
+                        ring.rotation.x = rotationX;
+                        ring.rotation.z = rotationZ;
+                        return ring;
+                    };
+
+                    const rings = [
+                        createRing(2.5,  Math.PI / 2.2, 0),
+                        createRing(2.8,  Math.PI / 4,   Math.PI / 4),
+                        createRing(3.2, -Math.PI / 3,  -Math.PI / 6),
+                    ];
+                    rings.forEach(ring => coreGroup.add(ring));
+
+                    // 3. Digital Dust Particles (Starfield Effect)
+                    const particlesGeometry = new THREE.BufferGeometry();
+                    const count = 8000;
+                    const positions = new Float32Array(count * 3);
+                    for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 50;
+                    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                    const particlesMaterial = new THREE.PointsMaterial({
+                        color: 0xB8860B, size: 0.08, transparent: true,
+                        opacity: 0.6, blending: THREE.AdditiveBlending
+                    });
+                    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+                    scene.add(particles);
+
+                    // Shockwave effect
+                    const wave = new THREE.Mesh(
+                        new THREE.RingGeometry(0.1, 0.3, 64),
+                        new THREE.MeshBasicMaterial({ color: 0xB8860B, transparent: true, opacity: 0, side: THREE.DoubleSide })
+                    );
+                    wave.rotation.x = -Math.PI / 2; wave.position.y = -3;
+                    scene.add(wave);
+
+                    let isLanded = false;
+
+                    function triggerEntrance() {
+                        if (typeof gsap === 'undefined') { showPanel(); return; }
+
+                        gsap.to(coreGroup.position, {
+                            y: 0, duration: 2.5, ease: 'power4.out',
+                            onComplete: () => {
+                                isLanded = true;
+                                gsap.to(wave.scale,    { x: 100, y: 100, duration: 2, ease: 'power2.out' });
+                                gsap.to(wave.material, { opacity: 1, duration: 0.1 });
+                                gsap.to(wave.material, { opacity: 0, duration: 1.5, delay: 0.1 });
+                                showPanel();
+                            }
+                        });
+                    }
+
+                    // Knowledge Reaction (Input Interactivity)
+                    document.querySelectorAll('input').forEach(input => {
+                        input.addEventListener('focus', () => {
+                            if (typeof gsap === 'undefined') return;
+                            gsap.to(core.scale, { x: 1.15, y: 1.15, z: 1.15, duration: 0.6, ease: 'back.out(2)' });
+                            gsap.to(coreMat,    { emissiveIntensity: 1.2, duration: 0.6 });
+                        });
+                        input.addEventListener('blur', () => {
+                            if (typeof gsap === 'undefined') return;
+                            gsap.to(core.scale, { x: 1, y: 1, z: 1, duration: 0.6, ease: 'back.out(2)' });
+                            gsap.to(coreMat,    { emissiveIntensity: 0.4, duration: 0.6 });
+                        });
+                    });
+
+                    // Initial Start
+                    setTimeout(() => {
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(loaderOverlay, {
+                                opacity: 0, duration: 1,
+                                onComplete: () => { loaderOverlay.remove(); triggerEntrance(); }
+                            });
+                        } else {
+                            showPanel();
+                        }
+                    }, 1000);
+
+                    // Render loop
+                    const clock = new THREE.Clock();
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        const delta = clock.getDelta();
+                        const t     = clock.getElapsedTime();
+
+                        if (isLanded) {
+                            coreGroup.position.y  = Math.sin(t * 0.5) * 0.3;
+                            core.rotation.y      += delta * 0.2;
+                            rings[0].rotation.z  += delta * 0.4;
+                            rings[1].rotation.x  += delta * 0.3;
+                            rings[2].rotation.y  += delta * 0.2;
+
+                            coreGroup.rotation.x += (-(mouseY / window.innerHeight - 0.5) * 0.3 - coreGroup.rotation.x) * 0.05;
+                            coreGroup.rotation.y += ((mouseX  / window.innerWidth  - 0.5) * 0.3 - coreGroup.rotation.y) * 0.05;
+
+                            coreGroup.position.x = -5;
+                            wave.position.x      = -5;
+                        }
+
+                        particles.rotation.y += delta * 0.05;
+                        camera.position.x += ((mouseX / window.innerWidth  - 0.5) * 2 - camera.position.x) * 0.05;
+                        camera.position.y += (-(mouseY / window.innerHeight - 0.5) * 2 - camera.position.y) * 0.05;
+                        camera.lookAt(0, 0, 0);
+
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+
+                    window.addEventListener('resize', () => {
+                        camera.aspect = window.innerWidth / window.innerHeight;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(window.innerWidth, window.innerHeight);
+                    });
+
+                } catch (sceneErr) {
+                    // Three.js scene crash → tampilkan form langsung
+                    console.warn('LUMINA: Scene error —', sceneErr.message);
+                    showPanel();
+                }
+            }
+        }
     </script>
 </body>
 </html>

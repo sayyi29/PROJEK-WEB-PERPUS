@@ -36,25 +36,36 @@ class AddBook extends Component
         $this->isFetching = true;
         
         try {
-            $response = Http::get("https://www.googleapis.com/books/v1/volumes", [
-                'q' => 'isbn:' . $this->isbn,
+            $response = Http::timeout(10)->get("https://www.googleapis.com/books/v1/volumes", [
+                'q'   => 'isbn:' . $this->isbn,
+                'key' => config('services.google_books.key'),
             ]);
 
             if ($response->successful() && isset($response->json()['items'])) {
                 $book = $response->json()['items'][0]['volumeInfo'];
                 
-                $this->title = $book['title'] ?? '';
-                $this->author = implode(', ', $book['authors'] ?? []);
-                $this->publisher = $book['publisher'] ?? '';
-                $this->year = isset($book['publishedDate']) ? substr($book['publishedDate'], 0, 4) : '';
+                $this->title       = $book['title'] ?? '';
+                $this->author      = implode(', ', $book['authors'] ?? []);
+                $this->publisher   = $book['publisher'] ?? '';
+                $this->year        = isset($book['publishedDate']) ? substr($book['publishedDate'], 0, 4) : '';
                 $this->description = $book['description'] ?? '';
-                $this->cover_image = $book['imageLinks']['thumbnail'] ?? '';
+
+                // Paksa HTTPS agar tidak mixed-content error di VPS
+                $cover = $book['imageLinks']['thumbnail']
+                    ?? $book['imageLinks']['smallThumbnail']
+                    ?? '';
+                $this->cover_image = str_replace('http://', 'https://', $cover);
                 
                 session()->flash('success', 'Data buku ditemukan!');
             } else {
+                \Log::warning('AddBook ISBN not found', [
+                    'isbn'   => $this->isbn,
+                    'status' => $response->status(),
+                ]);
                 session()->flash('error', 'Buku tidak ditemukan untuk ISBN ini.');
             }
         } catch (\Exception $e) {
+            \Log::error('AddBook fetchBookData Error: ' . $e->getMessage());
             session()->flash('error', 'Gagal menghubungi API: ' . $e->getMessage());
         }
 

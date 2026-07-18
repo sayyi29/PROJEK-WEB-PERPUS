@@ -244,18 +244,22 @@ class BookController extends Controller
         }
 
         try {
-            $apiKey = env('GOOGLE_BOOKS_API_KEY');
             $response = Http::timeout(10)->get('https://www.googleapis.com/books/v1/volumes', [
-                'q' => $query,
+                'q'          => $query,
                 'maxResults' => 10,
-                'key' => $apiKey,
+                'key'        => config('services.google_books.key'),  // config() aman saat cache aktif
             ]);
 
             if ($response->successful()) {
                 return response()->json($response->json()['items'] ?? []);
             }
+
+            \Log::warning('searchApi Google Books failed', [
+                'status' => $response->status(),
+                'query'  => $query,
+            ]);
         } catch (\Exception $e) {
-            \Log::error('Search API Error: ' . $e->getMessage());
+            \Log::error('searchApi Error: ' . $e->getMessage());
         }
 
         return response()->json([]);

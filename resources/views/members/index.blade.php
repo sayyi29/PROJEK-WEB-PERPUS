@@ -22,7 +22,7 @@
             <a href="{{ route('members.index', ['status' => 'active']) }}" class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ request('status') == 'active' ? 'bg-[#062C2C] text-white shadow-lg' : 'bg-white text-slate-400 border border-[#E8E4D9] hover:border-[#B8860B]' }}">
                 Active
             </a>
-            <a href="{{ route('members.index', ['status' => 'pending']) }}" class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ request('status') == 'pending' ? 'bg-[#062C2C] text-white shadow-lg' : 'bg-white text-slate-400 border border-[#E8E4D9] hover:border-[#B8860B]' }}">
+            <a href="{{ route('members.index', ['status' => 'pending_approval']) }}" class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all {{ request('status') == 'pending_approval' ? 'bg-[#062C2C] text-white shadow-lg' : 'bg-white text-slate-400 border border-[#E8E4D9] hover:border-[#B8860B]' }}">
                 Pending
             </a>
         </div>
@@ -58,7 +58,7 @@
                                 @php
                                     $statusColor = match($member->status) {
                                         'active' => 'bg-emerald-500 shadow-emerald-500/50',
-                                        'pending' => 'bg-amber-500 shadow-amber-500/50',
+                                        'pending_approval' => 'bg-amber-500 shadow-amber-500/50',
                                         default => 'bg-slate-300 shadow-slate-300/50'
                                     };
                                 @endphp
@@ -93,7 +93,7 @@
                         </div>
                         
                         <div class="flex items-center gap-4">
-                            @if($member->status == 'pending')
+                            @if($member->status == 'pending_approval')
                                 <form action="{{ route('members.approve', $member->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="text-[9px] font-black text-emerald-600 uppercase tracking-widest border border-emerald-100 px-3 py-1 rounded-lg hover:bg-emerald-50 transition-colors">
