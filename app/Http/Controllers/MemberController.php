@@ -64,6 +64,15 @@ class MemberController extends Controller
     }
 
     /**
+     * Display the specified member.
+     */
+    public function show(string $id)
+    {
+        $member = User::role('anggota')->findOrFail($id);
+        return view('members.show', compact('member'));
+    }
+
+    /**
      * Show the form for editing the specified member.
      */
     public function edit(string $id)
