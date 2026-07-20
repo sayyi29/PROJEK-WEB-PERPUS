@@ -27,43 +27,6 @@
             padding: 0;
         }
 
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background-color: #062C2C;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 280px;
-            flex-shrink: 0;
-            background-color: #062C2C;
-            z-index: 50;
-        }
-
-        /* Main Workspace Content Area */
-        .main-workspace {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            background-color: #F4F4F0; /* Soft Bone transition */
-        }
-
-        /* The signature rounded ivory surface */
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            background-color: #F9F7F2; /* Soft Ivory/Paper surface */
-            border-top-left-radius: 4rem; 
-            box-shadow: -20px 0 60px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
         /* Premium White Cards */
         .premium-card {
             background: #FFFFFF;
@@ -112,19 +75,21 @@
         }
     </style>
 </head>
-<body class="h-full antialiased overflow-hidden">
+<body class="h-screen antialiased overflow-hidden">
     @include('sweetalert::alert')
     
-    <div class="app-container">
+    <!-- App Container -->
+    <div class="flex h-screen w-full overflow-hidden bg-[#062C2C]">
+        
         <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <aside class="w-[280px] shrink-0 bg-[#062C2C] z-50 h-screen overflow-y-auto custom-scrollbar">
             @include('layouts.navigation')
         </aside>
 
-        <!-- Main Content Area -->
-        <div class="main-workspace">
+        <!-- Main Workspace Content Area -->
+        <div class="flex-1 flex flex-col min-w-0 bg-[#F4F4F0] h-screen">
             <!-- Header (Floating Style) -->
-            <header class="px-12 pt-8 pb-4 flex items-center justify-between">
+            <header class="px-12 pt-8 pb-4 flex items-center justify-between shrink-0">
                 <div>
                     @if(request()->routeIs('dashboard'))
                         <div class="flex items-center gap-3">
@@ -214,8 +179,8 @@
             </header>
 
             <!-- Main Content Scroll Area -->
-            <main class="content-area custom-scrollbar">
-                <div class="px-12 py-10">
+            <main class="flex-1 overflow-y-auto bg-[#F9F7F2] rounded-tl-[4rem] shadow-[-20px_0_60px_rgba(0,0,0,0.15)] flex flex-col relative custom-scrollbar">
+                <div class="px-12 py-10 min-h-full">
                     {{ $slot }}
                 </div>
             </main>
