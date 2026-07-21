@@ -1,48 +1,48 @@
-<div class="space-y-12">
+<div class="space-y-6">
     <!-- Hero: Membership Card -->
     <section>
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-3 flex items-center justify-between">
             <h3 class="text-xl font-black text-[#062C2C] uppercase tracking-tighter">Your Digital Passport</h3>
-            <span class="px-4 py-1.5 bg-[#B8860B] text-white text-[10px] font-black rounded-full uppercase tracking-widest animate-pulse">Prime Access</span>
+            <span class="px-4 py-1 bg-[#B8860B] text-white text-[10px] font-black rounded-full uppercase tracking-widest animate-pulse">Prime Access</span>
         </div>
         @include('profile.partials.membership-card')
     </section>
 
     <!-- Personal Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="premium-card p-8 rounded-[2.5rem] group">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="premium-card p-5 rounded-[1.5rem] group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Books in Hand</p>
-            <h4 class="text-3xl font-black text-[#062C2C]">{{ $stats['borrowed'] }}</h4>
+            <h4 class="text-2xl font-black text-[#062C2C]">{{ $stats['borrowed'] }}</h4>
         </div>
-        <div class="premium-card p-8 rounded-[2.5rem] group">
+        <div class="premium-card p-5 rounded-[1.5rem] group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Saved to Wishlist</p>
-            <h4 class="text-3xl font-black text-[#062C2C]">{{ $stats['wishlist'] }}</h4>
+            <h4 class="text-2xl font-black text-[#062C2C]">{{ $stats['wishlist'] }}</h4>
         </div>
-        <div class="premium-card p-8 rounded-[2.5rem] group">
+        <div class="premium-card p-5 rounded-[1.5rem] group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pending Fines</p>
-            <h4 class="text-3xl font-black {{ $stats['fines'] > 0 ? 'text-rose-900' : 'text-[#062C2C]' }}">Rp {{ number_format($stats['fines']) }}</h4>
+            <h4 class="text-2xl font-black {{ $stats['fines'] > 0 ? 'text-rose-900' : 'text-[#062C2C]' }}">Rp {{ number_format($stats['fines']) }}</h4>
         </div>
-        <div class="premium-card p-8 rounded-[2.5rem] group">
+        <div class="premium-card p-5 rounded-[1.5rem] group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Loan Allowance</p>
-            <h4 class="text-3xl font-black text-[#4F7942]">{{ $stats['loan_limit'] }} <span class="text-xs text-slate-400">Slots left</span></h4>
+            <h4 class="text-2xl font-black text-[#4F7942]">{{ $stats['loan_limit'] }} <span class="text-[10px] text-slate-400">Slots left</span></h4>
         </div>
     </div>
 
     <!-- Recommendations & Timeline -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Reading Timeline -->
-        <div class="lg:col-span-2 premium-card p-10 rounded-[3rem]">
-            <h3 class="text-lg font-black text-[#062C2C] uppercase tracking-tight mb-10">Reading Progress (Last 6 Months)</h3>
-            <div class="h-[250px]">
+        <div class="lg:col-span-2 premium-card p-6 rounded-[1.5rem]">
+            <h3 class="text-base font-black text-[#062C2C] uppercase tracking-tight mb-6">Reading Progress (Last 6 Months)</h3>
+            <div class="h-[180px]">
                 <canvas id="readingTimelineChart"></canvas>
             </div>
         </div>
 
         <!-- Reservations Status -->
-        <div class="premium-card p-10 rounded-[3rem]">
-            <h3 class="text-lg font-black uppercase tracking-tight mb-8 text-[#062C2C]">Reservations</h3>
+        <div class="premium-card p-6 rounded-[1.5rem]">
+            <h3 class="text-base font-black uppercase tracking-tight mb-6 text-[#062C2C]">Reservations</h3>
             @if($reservations->count() > 0)
-                <div class="space-y-6">
+                <div class="space-y-4">
                     @foreach($reservations as $res)
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-14 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 border border-slate-100">
@@ -64,14 +64,14 @@
     </div>
 
     <!-- For You Section -->
-    <section class="space-y-8">
+    <section class="space-y-4">
         <div class="flex items-center justify-between">
-            <h3 class="text-xl font-black text-[#062C2C] uppercase tracking-tight">Smart Recommendations</h3>
+            <h3 class="text-lg font-black text-[#062C2C] uppercase tracking-tight">Smart Recommendations</h3>
             <a href="{{ route('books.index') }}" class="text-[10px] font-black text-[#B8860B] uppercase tracking-widest hover:underline flex items-center gap-2">
                 View All <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
             </a>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
             @foreach($forYou as $book)
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-3">
@@ -89,14 +89,14 @@
     </section>
 
     <!-- New Arrivals Section -->
-    <section class="space-y-8">
+    <section class="space-y-4">
         <div class="flex items-center justify-between">
-            <h3 class="text-xl font-black text-[#062C2C] uppercase tracking-tight">New Arrivals</h3>
+            <h3 class="text-lg font-black text-[#062C2C] uppercase tracking-tight">New Arrivals</h3>
             <a href="{{ route('books.index') }}" class="text-[10px] font-black text-[#B8860B] uppercase tracking-widest hover:underline flex items-center gap-2">
                 View All <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
             </a>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
             @foreach($newArrivals as $book)
                 <div class="group cursor-pointer">
                     <div class="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-3 border border-slate-100">

@@ -1,4 +1,4 @@
-<div class="relative overflow-hidden bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-800 group transition-all duration-500 hover:shadow-slate-200">
+<div class="relative overflow-hidden bg-slate-900 rounded-3xl shadow-2xl border border-slate-800 group transition-all duration-500 hover:shadow-slate-200">
     <!-- Subtle Gradient Overlay -->
     <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 opacity-90"></div>
     
@@ -6,16 +6,16 @@
     <div class="absolute -top-12 -right-12 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl group-hover:bg-amber-500/10 transition-colors"></div>
     <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-slate-700/20 rounded-full blur-3xl"></div>
 
-    <div class="relative px-10 py-8 flex flex-col md:flex-row items-center justify-between gap-8">
+    <div class="relative px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-6">
         <!-- Brand & Scannable -->
-        <div class="flex items-center gap-8">
-            <div class="bg-white p-2.5 rounded-2xl shadow-xl flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
-                {!! QrCode::size(70)->margin(1)->color(15, 23, 42)->generate(Auth::user()->email) !!}
+        <div class="flex items-center gap-6">
+            <div class="bg-white p-2 rounded-xl shadow-xl flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
+                {!! QrCode::size(55)->margin(1)->color(15, 23, 42)->generate(Auth::user()->email) !!}
             </div>
             
             <div class="space-y-1.5">
                 <div class="flex items-center gap-3">
-                    <h2 class="text-2xl font-black text-white tracking-tighter uppercase leading-none">
+                    <h2 class="text-xl font-black text-white tracking-tighter uppercase leading-none">
                         LUMINA <span class="text-amber-500">PRIME</span>
                     </h2>
                     <span class="px-2.5 py-1 bg-white/5 border border-white/10 text-white/60 text-[8px] font-black rounded-full uppercase tracking-[0.2em]">Verified Status</span>
@@ -28,15 +28,15 @@
         </div>
 
         <!-- User Identity Info -->
-        <div class="flex items-center gap-6 md:border-l md:border-white/10 md:pl-8">
+        <div class="flex items-center gap-5 md:border-l md:border-white/10 md:pl-6">
             <div class="text-right">
-                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1">Official Member</p>
-                <p class="text-lg font-black text-white uppercase tracking-tight">{{ Auth::user()->name }}</p>
+                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-0.5">Official Member</p>
+                <p class="text-base font-black text-white uppercase tracking-tight">{{ Auth::user()->name }}</p>
                 <p class="text-[8px] font-medium text-slate-500 uppercase tracking-widest mt-1">ID: {{ substr(md5(Auth::user()->email), 0, 12) }}</p>
             </div>
             
             <div class="relative">
-                <div class="h-14 w-14 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl group-hover:border-amber-500/30 transition-all duration-500">
+                <div class="h-11 w-11 rounded-2xl overflow-hidden border border-white/10 shadow-xl group-hover:border-amber-500/30 transition-all duration-500">
                     @if (Auth::user()->profile_photo_path)
                         <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" class="w-full h-full object-cover">
                     @else

@@ -420,7 +420,7 @@
         </aside>
 
         <!-- ===== MAIN WORKSPACE ===== -->
-        <div class="flex-1 flex flex-col min-w-0 bg-[#F4F4F0] h-screen overflow-hidden">
+        <div class="flex-1 flex flex-col min-w-0 bg-[#F4F4F0] overflow-hidden">
 
             <!-- Top Header -->
             <header class="px-6 pt-4 pb-3 flex items-center justify-between shrink-0 gap-4">
@@ -513,7 +513,7 @@
 
             <!-- Main Content Scroll Area -->
             <main class="flex-1 overflow-y-auto bg-[#F9F7F2] rounded-tl-[2rem] shadow-[-12px_0_40px_rgba(0,0,0,0.1)] flex flex-col relative custom-scrollbar">
-                <div class="px-6 py-6 min-h-full">
+                <div class="px-6 py-4 min-h-full">
                     {{ $slot }}
                 </div>
             </main>
