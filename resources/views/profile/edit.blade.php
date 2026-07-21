@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto space-y-10">
+    <div class="max-w-7xl mx-auto space-y-10 profile-container">
         
         <!-- Elegant Header -->
         <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-[#E8E4D9] pb-8 gap-6">
@@ -61,7 +61,7 @@
 
     <style>
         /* Unified Form Controls for Soft Paper Theme */
-        input, textarea, select {
+        .profile-container input, .profile-container textarea, .profile-container select {
             background-color: rgba(255, 255, 255, 0.05) !important; 
             border: 1px solid rgba(255, 255, 255, 0.1) !important; 
             border-radius: 16px !important;
@@ -75,13 +75,13 @@
             -moz-appearance: none !important;
             background-image: none !important;
         }
-        input:focus {
+        .profile-container input:focus {
             background-color: rgba(255, 255, 255, 0.1) !important;
             border-color: #B8860B !important;
             box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.1) !important;
             outline: none !important;
         }
-        label {
+        .profile-container label {
             font-size: 10px !important;
             font-weight: 800 !important;
             text-transform: uppercase !important;
@@ -92,17 +92,17 @@
         }
 
         /* Danger Zone Override (Stay Light) */
-        .premium-card input, .premium-card textarea, .premium-card select {
+        .profile-container .premium-card input, .profile-container .premium-card textarea, .profile-container .premium-card select {
             background-color: #FDFCF9 !important;
             border: 1px solid #E8E4D9 !important;
             color: #062C2C !important;
         }
-        .premium-card label {
+        .profile-container .premium-card label {
             color: #062C2C !important;
             opacity: 0.6;
         }
 
-        button[type="submit"] {
+        .profile-container button[type="submit"] {
             background-color: #B8860B !important;
             color: #FFFFFF !important;
             padding: 1rem 2rem !important;

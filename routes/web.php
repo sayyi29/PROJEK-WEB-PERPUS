@@ -65,15 +65,16 @@ Route::middleware('auth')->group(function () {
     Route::get('books/{book}/check-availability', [App\Http\Controllers\BookController::class, 'checkAvailability'])->name('books.check_availability');
     Route::post('books/{book}/reserve', [App\Http\Controllers\BookController::class, 'reserveBook'])->name('books.reserve');
     Route::resource('categories', App\Http\Controllers\CategoryController::class);
+    // Member specific routes (MUST be above resource to avoid being caught by /members/{member})
+    Route::get('/members/pending', [App\Http\Controllers\MemberController::class, 'pendingApproval'])->name('members.pending_approval');
+    Route::post('/members/{id}/approve', [App\Http\Controllers\MemberController::class, 'approve'])->name('members.approve');
+    Route::post('/members/{id}/reject', [App\Http\Controllers\MemberController::class, 'reject'])->name('members.reject');
     Route::resource('members', App\Http\Controllers\MemberController::class);
     
     // Wishlist
     Route::get('/wishlist', [App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist.index');
     Route::delete('/wishlist/{wishlist}', [App\Http\Controllers\WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
-    Route::get('/members/pending', [App\Http\Controllers\MemberController::class, 'pendingApproval'])->name('members.pending_approval');
-    Route::post('/members/{id}/approve', [App\Http\Controllers\MemberController::class, 'approve'])->name('members.approve');
-    Route::post('/members/{id}/reject', [App\Http\Controllers\MemberController::class, 'reject'])->name('members.reject');
 
     // Transaksi
     Route::get('/borrowings/{borrowing}/print', [App\Http\Controllers\BorrowingController::class, 'print'])->name('borrowings.print');

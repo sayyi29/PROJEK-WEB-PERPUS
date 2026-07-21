@@ -161,7 +161,7 @@ class MemberController extends Controller
         $member->update(['status' => 'active']);
 
         // Potentially send a notification or email to the member
-        return redirect()->route('members.pending_approval')->with('success', 'Anggota berhasil diaktifkan.');
+        return redirect()->back()->with('success', 'Anggota berhasil diaktifkan.');
     }
 
     /**
@@ -173,7 +173,7 @@ class MemberController extends Controller
         $member->update(['status' => 'inactive']); // Or a 'rejected' status if preferred
 
         // Potentially notify the member about rejection
-        return redirect()->route('members.pending_approval')->with('success', 'Anggota berhasil ditolak/dinonaktifkan.');
+        return redirect()->back()->with('success', 'Anggota berhasil ditolak/dinonaktifkan.');
     }
 }
 
